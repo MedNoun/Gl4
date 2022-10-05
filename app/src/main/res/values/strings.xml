@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">MedNoun</string>
+    <string-array name="pizzaTypes">
+        <item>Pepperoni</item>
+        <item>Thon</item>
+        <item>Nutella</item>
+    </string-array>
+</resources>
