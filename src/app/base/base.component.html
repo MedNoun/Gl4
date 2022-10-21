@@ -1,1 +1,6 @@
+<div [style.background-color]="color">
+  <input type="text" [(ngModel)]="color" />
+  <button (click)="handleClick()">set</button>
+</div>
 
+<app-fils (colorEvent)="handleEvent($event)" [color]="color"></app-fils>

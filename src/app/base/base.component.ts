@@ -3,20 +3,20 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-base',
   templateUrl: './base.component.html',
-  styleUrls: ['./base.component.css']
+  styleUrls: ['./base.component.css'],
 })
 export class BaseComponent implements OnInit {
+  public color: string;
 
-  public color : string;
-
-  constructor() { 
-    this.color = "";
+  constructor() {
+    this.color = '';
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
   handleClick() {
-    this.color = ""
+    this.color = '';
   }
-
+  handleEvent(event: any) {
+    this.color = event;
+  }
 }
