@@ -1,0 +1,45 @@
+<div class="parent">
+  <div class="inputs">
+    <label for="name">Name :</label>
+    <input type="text" name="name" [(ngModel)]="info.name" />
+    <label for="first_name">First name :</label>
+    <input type="text" name="first_name" [(ngModel)]="info.first_name" />
+    <label for="name">Description :</label>
+    <input type="text" [(ngModel)]="info.description" />
+    <label for="name">Job description : </label>
+    <input type="text" [(ngModel)]="info.job" />
+    <label for="name">Citation : </label>
+    <input type="text" [(ngModel)]="info.citation" />
+  </div>
+  <div class="display">
+    <mat-card class="example-card">
+      <mat-card-header>
+        <div mat-card-avatar class="example-header-image"></div>
+        <mat-card-title>
+          {{ info.name }}
+        </mat-card-title>
+        <mat-card-subtitle>
+          {{ info.first_name }}
+        </mat-card-subtitle>
+      </mat-card-header>
+      <img
+        class="image"
+        mat-card-image
+        src="https://material.angular.io/assets/img/examples/shiba2.jpg"
+        alt="Photo of a Shiba Inu"
+      />
+      <mat-card-content>
+        <p>
+          {{ info.description }}
+        </p>
+      </mat-card-content>
+
+      <div>Job : {{ info.job }}</div>
+      <div>Citation : {{ info.citation }}</div>
+      <mat-card-actions>
+        <button mat-button>LIKE</button>
+        <button mat-button>SHARE</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>

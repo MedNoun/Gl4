@@ -6,13 +6,17 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./base.component.css']
 })
 export class BaseComponent implements OnInit {
-  color : string;
+
+  public color : string;
 
   constructor() { 
-    this.color = "blue";
+    this.color = "";
   }
 
   ngOnInit(): void {
+  }
+  handleClick() {
+    this.color = ""
   }
 
 }
