@@ -114,10 +114,8 @@ def egalisation(img):
   cum = cumule(img)
   n1 = []
   for i in range(len(hist)):
-    
     p = cum[i] / (img.shape[0] * img.shape[1])
     n1.append(int(np.floor(255*p)))
-  
 
   out = []
   j = 0
@@ -127,16 +125,24 @@ def egalisation(img):
       while(n1[j] == i):
         som = som + hist[j]
         j+=1
-      out.append(som)
+      out.append(int(som))
     else:
       out.append(0)
 
-  print(out)
+  return out, n1
   
 
-
+def preprocess(n1, im):
+  dic = {i:n1[i] for i in range(256)}
+  img = np.zeros((im.shape[0],im.shape[1]))
+  for i, el in enumerate(im):
+    for j, el in enumerate(el):
+      img[i][j] = dic[im[i][j]]
+  return img
 
 im = read_pgm("chat.pgm")
-histogram = egalisation(im)
+histogram, n1 = egalisation(im)
+img2 = preprocess(n1,im)
 
+pgmwrite(img2, "out/egalisation")
 
