@@ -1,3 +1,4 @@
+from opcode import hasjabs
 import matplotlib.pyplot as plt
 
 import numpy as np
@@ -104,12 +105,38 @@ def cumule(img):
     somm = 0
     for i,el in enumerate(arr):
         somm += el
-        arr[i] = somm
+        arr_cumul[i] = somm
     return arr_cumul
+
+
+def egalisation(img):
+  hist = histo(img)
+  cum = cumule(img)
+  n1 = []
+  for i in range(len(hist)):
+    
+    p = cum[i] / (img.shape[0] * img.shape[1])
+    n1.append(int(np.floor(255*p)))
+  
+
+  out = []
+  j = 0
+  for i in range(len(hist) - 1):
+    if(n1[j] == i):
+      som = 0
+      while(n1[j] == i):
+        som = som + hist[j]
+        j+=1
+      out.append(som)
+    else:
+      out.append(0)
+
+  print(out)
+  
 
 
 
 im = read_pgm("chat.pgm")
-pgmwrite(filename="out.pgm",img=im)
-print(moyenneGris(im), " : ", ecartypeGris(im))
+histogram = egalisation(im)
+
 
