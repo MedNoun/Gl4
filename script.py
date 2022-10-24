@@ -54,10 +54,6 @@ def pgmread(filename):
 def pgmwrite(img, filename, maxVal=255, magicNum='P2'):
   img = int32(img).tolist()
   f = open(filename + ".pgm",'w')
-  file = open(filename+".txt", "w+")
-  content = str(img)
-  file.write(content)
-  file.close()
   width = 0
   height = 0
   for row in img:
@@ -94,7 +90,6 @@ def cumule(img):
         arr_cumul[i] = somm
     return arr_cumul
 def egalisation(img):
-  print(img.shape)
   hist = histo(img)
   cum = cumule(img)
   n1 = []
@@ -150,8 +145,13 @@ def transfrom(img,*points : point):
   img2 = preprocess(n1,img)
   return img2
 
-im = read_pgm("chat.pgm")
 img,width,height = pgmread("chat.pgm")
 print("infos : ", moyenneGris(img), ecartypeGris(img))
 out,_,_ = egalisation(img)
+p1 = point(125,144)
+p2 = point(180,175)
+p3 = point(200,200)
+p4 = point(256,256)
+transformed = transfrom(img,p1,p2,p3,p4)
 pgmwrite(out,"out/egalisation_new")
+pgmwrite(out,"out/transformed")
