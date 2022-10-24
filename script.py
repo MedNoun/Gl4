@@ -1,13 +1,5 @@
-import matplotlib.pyplot as plt
-
 import numpy as np
-from numpy import array, int32
-
-
-def read_pgm(path):
-    with open(path, 'rb') as pgmf:
-        im = plt.imread(pgmf)
-    return im
+from numpy import int32
 
 def moyenneGris(matrice) : 
     somme = 0
@@ -56,9 +48,9 @@ def pgmread(filename):
   for i in range(height):
     tmpList = []
     for j in range(width):
-      tmpList.append(elem[i*width+j])
+      tmpList.append(int(elem[i*width+j]))
     img.append(tmpList)
-  return (array(img), width, height)
+  return (np.array(img), width, height)
 def pgmwrite(img, filename, maxVal=255, magicNum='P2'):
   img = int32(img).tolist()
   f = open(filename + ".pgm",'w')
@@ -102,6 +94,7 @@ def cumule(img):
         arr_cumul[i] = somm
     return arr_cumul
 def egalisation(img):
+  print(img.shape)
   hist = histo(img)
   cum = cumule(img)
   n1 = []
@@ -121,7 +114,8 @@ def egalisation(img):
     else:
       out.append(0)
 
-  return out, n1
+  img2 = preprocess(n1,img)
+  return img2, out, n1
 def preprocess(n1, im):
   dic = {i:n1[i] for i in range(256)}
   img = np.zeros((im.shape[0],im.shape[1]))
@@ -157,15 +151,7 @@ def transfrom(img,*points : point):
   return img2
 
 im = read_pgm("chat.pgm")
-histogram, n1 = egalisation(im)
-img2 = preprocess(n1,im)
-
-p1 = point(125,175)
-p2 = point(200,250)
-p3 = point(256, 256)
-
-contrast = transfrom(im,p1,p2,p3)
-
-pgmwrite(img2, "out/egalisation")
-pgmwrite(contrast, "out/contrast")
-
+img,width,height = pgmread("chat.pgm")
+print("infos : ", moyenneGris(img), ecartypeGris(img))
+out,_,_ = egalisation(img)
+pgmwrite(out,"out/egalisation_new")
