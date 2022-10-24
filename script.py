@@ -1,4 +1,3 @@
-from opcode import hasjabs
 import matplotlib.pyplot as plt
 
 import numpy as np
@@ -17,7 +16,6 @@ def moyenneGris(matrice) :
             somme += matrice[i][j]
     
     return somme / (matrice.shape[0] * matrice.shape[1])
-
 def ecartypeGris(matrice) :
     somme = 0
     moy = moyenneGris(matrice)
@@ -61,7 +59,6 @@ def pgmread(filename):
       tmpList.append(elem[i*width+j])
     img.append(tmpList)
   return (array(img), width, height)
-
 def pgmwrite(img, filename, maxVal=255, magicNum='P2'):
   img = int32(img).tolist()
   f = open(filename + ".pgm",'w')
@@ -90,15 +87,12 @@ def pgmwrite(img, filename, maxVal=255, magicNum='P2'):
         count = count + 1
     f.write('\n')
   f.close()
-
-
 def histo(img):
     arr = np.zeros(256)
     for el in img:
         for num in el:
             arr[num]+=1;
     return arr
-
 def cumule(img):
     arr = histo(img)
     arr_cumul = np.zeros(256)
@@ -107,8 +101,6 @@ def cumule(img):
         somm += el
         arr_cumul[i] = somm
     return arr_cumul
-
-
 def egalisation(img):
   hist = histo(img)
   cum = cumule(img)
@@ -130,8 +122,6 @@ def egalisation(img):
       out.append(0)
 
   return out, n1
-  
-
 def preprocess(n1, im):
   dic = {i:n1[i] for i in range(256)}
   img = np.zeros((im.shape[0],im.shape[1]))
@@ -139,10 +129,43 @@ def preprocess(n1, im):
     for j, el in enumerate(el):
       img[i][j] = dic[im[i][j]]
   return img
+class point:
+  def __init__(self,x,y):
+    self.x = x
+    self.y = y
+class linear:
+  def __init__(self,p1 :point, p2 :point):
+    self.p1 = p1
+    self.p2 = p2
+    self.a = (p2.y - p1.y)/(p2.x - p1.x)
+    self.b = - self.a*p1.x + p1.y
+  def value(self,x):
+    return self.a*x + self.b
+
+def transfrom(img,*points : point):
+  origin = point(0,0)
+  all_points = [origin] + [point for point in points]
+  n1 = []
+
+  for i in range(len(all_points) - 1):
+    first : point = all_points[i]
+    second : point = all_points[i+1]
+    line = linear(first, second)
+    n1 = n1 + [int(np.floor(line.value(x))) for x in range(first.x, second.x)]
+ 
+  img2 = preprocess(n1,img)
+  return img2
 
 im = read_pgm("chat.pgm")
 histogram, n1 = egalisation(im)
 img2 = preprocess(n1,im)
 
+p1 = point(125,175)
+p2 = point(200,250)
+p3 = point(256, 256)
+
+contrast = transfrom(im,p1,p2,p3)
+
 pgmwrite(img2, "out/egalisation")
+pgmwrite(contrast, "out/contrast")
 
